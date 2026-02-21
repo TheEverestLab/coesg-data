@@ -24,7 +24,7 @@ from calendar import monthrange
 
 DATA_GOV_URL = "https://data.gov.sg/api/action/datastore_search"
 RESOURCE_ID = "d_69b3380ad7e51aff3a7dcc84eba52b8a"
-FETCH_LIMIT = 200  # ~40 rounds × 5 categories
+FETCH_LIMIT = 1000  # ~200 rounds × 5 categories — 4+ years of history
 
 SGT = timezone(timedelta(hours=8))
 
@@ -208,6 +208,112 @@ def write_json(path: Path, data) -> None:
     print(f"Wrote {path} ({path.stat().st_size} bytes)")
 
 
+def build_analytics(rounds: list[dict]) -> dict:
+    """
+    Build per-category analytics from historical rounds.
+    Output: v1/analytics.json
+    """
+    import statistics
+
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    categories = ["A", "B", "C", "D", "E"]
+    per_category = {}
+
+    for cat in categories:
+        prices_with_dates = []
+        for r in rounds:
+            p = r["prices"].get(cat)
+            if p is not None:
+                prices_with_dates.append((p, r["biddingDate"]))
+
+        if not prices_with_dates:
+            continue
+
+        prices = [pw[0] for pw in prices_with_dates]
+        avg = int(statistics.mean(prices))
+        med = int(statistics.median(prices))
+
+        min_entry = min(prices_with_dates, key=lambda x: x[0])
+        max_entry = max(prices_with_dates, key=lambda x: x[0])
+
+        # YoY change: latest price vs price ~1 year ago
+        yoy_change = None
+        if len(prices_with_dates) >= 2:
+            latest_price = prices_with_dates[0][0]  # rounds are sorted desc
+            # Find the round closest to 1 year ago
+            latest_date = datetime.fromisoformat(prices_with_dates[0][1].replace("Z", "+00:00"))
+            one_year_ago = latest_date - timedelta(days=365)
+            closest = min(
+                prices_with_dates[1:],
+                key=lambda x: abs(
+                    (datetime.fromisoformat(x[1].replace("Z", "+00:00")) - one_year_ago).total_seconds()
+                ),
+            )
+            yoy_change = latest_price - closest[0]
+
+        per_category[cat] = {
+            "average": avg,
+            "median": med,
+            "min": {"price": min_entry[0], "date": min_entry[1]},
+            "max": {"price": max_entry[0], "date": max_entry[1]},
+            "yoyChange": yoy_change,
+            "dataPoints": len(prices),
+        }
+
+    return {
+        "categories": per_category,
+        "totalRounds": len(rounds),
+        "generatedAt": now,
+    }
+
+
+def build_schedule() -> dict:
+    """
+    Build a schedule of the next 4 upcoming bidding dates.
+    Output: v1/schedule.json
+    """
+    now_sgt = datetime.now(SGT)
+    schedules = []
+    year, month = now_sgt.year, now_sgt.month
+    exercise = 1  # Start checking from exercise 1 of current month
+
+    while len(schedules) < 4:
+        for ex in (1, 3):
+            if exercise > 1 and ex < exercise:
+                continue
+            wed_day = nth_weekday_of_month(year, month, 2, ex)  # 2 = Wednesday
+            closing_sgt = datetime(year, month, wed_day, 16, 0, 0, tzinfo=SGT)
+
+            if closing_sgt <= now_sgt:
+                continue
+
+            closing_utc = closing_sgt.astimezone(timezone.utc)
+            bidding_no = 1 if ex == 1 else 2
+            month_str = f"{year}-{month:02d}"
+
+            schedules.append({
+                "closingDate": closing_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "roundLabel": round_label_for(month_str, bidding_no),
+                "exerciseNumber": bidding_no,
+            })
+
+            if len(schedules) >= 4:
+                break
+
+        exercise = 1  # Reset for next month
+        # Advance to next month
+        month += 1
+        if month > 12:
+            month = 1
+            year += 1
+
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return {
+        "upcoming": schedules,
+        "generatedAt": now,
+    }
+
+
 def main():
     records = fetch_records()
 
@@ -226,6 +332,14 @@ def main():
 
     write_json(OUTPUT_DIR / "latest.json", snapshot)
     write_json(OUTPUT_DIR / "history.json", rounds)
+
+    # Pre-computed analytics
+    analytics = build_analytics(rounds)
+    write_json(OUTPUT_DIR / "analytics.json", analytics)
+
+    # Bidding schedule
+    schedule = build_schedule()
+    write_json(OUTPUT_DIR / "schedule.json", schedule)
 
     # Summary
     latest = rounds[0]
