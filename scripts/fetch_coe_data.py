@@ -24,7 +24,8 @@ from calendar import monthrange
 
 DATA_GOV_URL = "https://data.gov.sg/api/action/datastore_search"
 RESOURCE_ID = "d_69b3380ad7e51aff3a7dcc84eba52b8a"
-FETCH_LIMIT = 1000  # ~200 rounds × 5 categories — 4+ years of history
+FETCH_LIMIT = 50   # Only recent data — existing history loaded from CDN below
+CDN_HISTORY_URL = "https://theeverestlab.github.io/coesg-data/v1/history.json"
 
 SGT = timezone(timedelta(hours=8))
 
@@ -83,7 +84,7 @@ def round_label_for(month_str: str, bidding_no: int) -> str:
 # ── Main ────────────────────────────────────────────────────────────────
 
 MAX_RETRIES = 4
-RETRY_DELAYS = [10, 20, 40, 60]  # seconds
+RETRY_DELAYS = [60, 120, 300, 600]  # seconds — long enough to outlast 429 windows
 
 
 def _make_ssl_context() -> ssl.SSLContext:
@@ -149,6 +150,22 @@ def fetch_records() -> list[dict]:
 
     print("All retry attempts exhausted", file=sys.stderr)
     sys.exit(1)
+
+
+def load_existing_history() -> list[dict]:
+    """Load existing history from CDN to avoid re-fetching immutable historical data."""
+    try:
+        print(f"Loading existing history from CDN...")
+        ctx = _make_ssl_context()
+        req = urllib.request.Request(CDN_HISTORY_URL)
+        req.add_header("User-Agent", "COE-SG-GitHub-Actions/1.0")
+        with urllib.request.urlopen(req, timeout=30, context=ctx) as resp:
+            existing = json.loads(resp.read().decode())
+        print(f"  Loaded {len(existing)} existing rounds from CDN")
+        return existing
+    except Exception as e:
+        print(f"  Could not load CDN history (will fetch all from API): {e}")
+        return []
 
 
 def group_into_rounds(records: list[dict]) -> list[dict]:
@@ -315,17 +332,29 @@ def build_schedule() -> dict:
 
 
 def main():
+    # Load existing CDN data first (avoids re-fetching immutable history)
+    existing_rounds = load_existing_history()
+    existing_by_id = {r["id"]: r for r in existing_rounds}
+
+    # Fetch only the most recent records from data.gov.sg
     records = fetch_records()
 
     if not records:
         print("No records returned, skipping write", file=sys.stderr)
         sys.exit(1)
 
-    rounds = group_into_rounds(records)
-    print(f"Grouped into {len(rounds)} rounds")
+    new_rounds = group_into_rounds(records)
+    print(f"Grouped {len(new_rounds)} rounds from API")
+
+    # Merge — new API data takes precedence over cached CDN data
+    merged = dict(existing_by_id)
+    for r in new_rounds:
+        merged[r["id"]] = r
+    rounds = sorted(merged.values(), key=lambda r: r["biddingDate"], reverse=True)
+    print(f"Total rounds after merge: {len(rounds)}")
 
     if not rounds:
-        print("No rounds after grouping, skipping write", file=sys.stderr)
+        print("No rounds after merge, skipping write", file=sys.stderr)
         sys.exit(1)
 
     snapshot = build_latest_snapshot(rounds)
