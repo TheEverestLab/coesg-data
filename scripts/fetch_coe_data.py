@@ -98,8 +98,12 @@ def _make_ssl_context() -> ssl.SSLContext:
     return ssl.create_default_context()
 
 
-def fetch_records() -> list[dict]:
-    """Fetch raw records from data.gov.sg with retry on rate limiting."""
+def fetch_records() -> list[dict] | None:
+    """
+    Fetch raw records from data.gov.sg with retry on rate limiting.
+    Returns None if the API is unavailable after all retries (caller should
+    fall back to existing CDN data).
+    """
     params = (
         f"resource_id={RESOURCE_ID}"
         f"&limit={FETCH_LIMIT}"
@@ -119,16 +123,19 @@ def fetch_records() -> list[dict]:
             with urllib.request.urlopen(req, timeout=30, context=ctx) as resp:
                 data = json.loads(resp.read().decode())
         except urllib.error.HTTPError as e:
-            if e.code == 429 and attempt < MAX_RETRIES:
-                delay = RETRY_DELAYS[attempt - 1]
-                print(f"Rate limited (429), retrying in {delay}s...")
-                time.sleep(delay)
-                continue
+            if e.code == 429:
+                if attempt < MAX_RETRIES:
+                    delay = RETRY_DELAYS[attempt - 1]
+                    print(f"Rate limited (429), retrying in {delay}s...")
+                    time.sleep(delay)
+                    continue
+                print("Rate limited (429) after all retries — will use CDN data", file=sys.stderr)
+                return None
             print(f"HTTP error {e.code}: {e.reason}", file=sys.stderr)
-            sys.exit(1)
+            return None
         except urllib.error.URLError as e:
             print(f"URL error: {e.reason}", file=sys.stderr)
-            sys.exit(1)
+            return None
 
         # Handle rate limit returned as JSON (non-HTTP-429 variant)
         if data.get("code") == 24 or data.get("name") == "TOO_MANY_REQUESTS":
@@ -137,19 +144,19 @@ def fetch_records() -> list[dict]:
                 print(f"Rate limited (JSON), retrying in {delay}s...")
                 time.sleep(delay)
                 continue
-            print("Rate limit exceeded after all retries", file=sys.stderr)
-            sys.exit(1)
+            print("Rate limit exceeded after all retries — will use CDN data", file=sys.stderr)
+            return None
 
         if not data.get("success"):
             print(f"API returned success=false: {json.dumps(data)[:200]}", file=sys.stderr)
-            sys.exit(1)
+            return None
 
         records = data["result"]["records"]
         print(f"Fetched {len(records)} records")
         return records
 
-    print("All retry attempts exhausted", file=sys.stderr)
-    sys.exit(1)
+    print("All retry attempts exhausted — will use CDN data", file=sys.stderr)
+    return None
 
 
 def load_existing_history() -> list[dict]:
@@ -339,23 +346,31 @@ def main():
     # Fetch only the most recent records from data.gov.sg
     records = fetch_records()
 
-    if not records:
-        print("No records returned, skipping write", file=sys.stderr)
-        sys.exit(1)
+    if records is None:
+        # API unavailable — fall back to existing CDN data
+        if not existing_rounds:
+            print("No data available from API or CDN", file=sys.stderr)
+            sys.exit(1)
+        print(f"API unavailable — using {len(existing_rounds)} existing CDN rounds as-is")
+        rounds = sorted(existing_rounds, key=lambda r: r["biddingDate"], reverse=True)
+    else:
+        if not records:
+            print("No records returned, skipping write", file=sys.stderr)
+            sys.exit(1)
 
-    new_rounds = group_into_rounds(records)
-    print(f"Grouped {len(new_rounds)} rounds from API")
+        new_rounds = group_into_rounds(records)
+        print(f"Grouped {len(new_rounds)} rounds from API")
 
-    # Merge — new API data takes precedence over cached CDN data
-    merged = dict(existing_by_id)
-    for r in new_rounds:
-        merged[r["id"]] = r
-    rounds = sorted(merged.values(), key=lambda r: r["biddingDate"], reverse=True)
-    print(f"Total rounds after merge: {len(rounds)}")
+        # Merge — new API data takes precedence over cached CDN data
+        merged = dict(existing_by_id)
+        for r in new_rounds:
+            merged[r["id"]] = r
+        rounds = sorted(merged.values(), key=lambda r: r["biddingDate"], reverse=True)
+        print(f"Total rounds after merge: {len(rounds)}")
 
-    if not rounds:
-        print("No rounds after merge, skipping write", file=sys.stderr)
-        sys.exit(1)
+        if not rounds:
+            print("No rounds after merge, skipping write", file=sys.stderr)
+            sys.exit(1)
 
     snapshot = build_latest_snapshot(rounds)
 
