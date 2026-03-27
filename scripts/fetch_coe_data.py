@@ -11,6 +11,7 @@ Run via CI:     .github/workflows/fetch.yml
 """
 
 import json
+import random
 import ssl
 import sys
 import time
@@ -83,8 +84,12 @@ def round_label_for(month_str: str, bidding_no: int) -> str:
 
 # ── Main ────────────────────────────────────────────────────────────────
 
+<<<<<<< HEAD
 MAX_RETRIES = 4
 RETRY_DELAYS = [60, 120, 300, 600]  # seconds — long enough to outlast 429 windows
+=======
+MAX_RETRIES = 6
+>>>>>>> b608c04... fix: skip writing data files when only timestamps changed to prevent empty commits
 
 
 def _make_ssl_context() -> ssl.SSLContext:
@@ -99,10 +104,16 @@ def _make_ssl_context() -> ssl.SSLContext:
 
 
 def fetch_records() -> list[dict] | None:
+<<<<<<< HEAD
     """
     Fetch raw records from data.gov.sg with retry on rate limiting.
     Returns None if the API is unavailable after all retries (caller should
     fall back to existing CDN data).
+=======
+    """Fetch raw records from data.gov.sg with retry on rate limiting.
+
+    Returns the list of records on success, or None if all retries fail.
+>>>>>>> b608c04... fix: skip writing data files when only timestamps changed to prevent empty commits
     """
     params = (
         f"resource_id={RESOURCE_ID}"
@@ -123,6 +134,7 @@ def fetch_records() -> list[dict] | None:
             with urllib.request.urlopen(req, timeout=30, context=ctx) as resp:
                 data = json.loads(resp.read().decode())
         except urllib.error.HTTPError as e:
+<<<<<<< HEAD
             if e.code == 429:
                 if attempt < MAX_RETRIES:
                     delay = RETRY_DELAYS[attempt - 1]
@@ -131,6 +143,13 @@ def fetch_records() -> list[dict] | None:
                     continue
                 print("Rate limited (429) after all retries — will use CDN data", file=sys.stderr)
                 return None
+=======
+            if e.code == 429 and attempt < MAX_RETRIES:
+                delay = min(30 * (2 ** (attempt - 1)), 300) + random.uniform(0, 15)
+                print(f"Rate limited (429), retrying in {delay:.0f}s...")
+                time.sleep(delay)
+                continue
+>>>>>>> b608c04... fix: skip writing data files when only timestamps changed to prevent empty commits
             print(f"HTTP error {e.code}: {e.reason}", file=sys.stderr)
             return None
         except urllib.error.URLError as e:
@@ -140,11 +159,15 @@ def fetch_records() -> list[dict] | None:
         # Handle rate limit returned as JSON (non-HTTP-429 variant)
         if data.get("code") == 24 or data.get("name") == "TOO_MANY_REQUESTS":
             if attempt < MAX_RETRIES:
-                delay = RETRY_DELAYS[attempt - 1]
-                print(f"Rate limited (JSON), retrying in {delay}s...")
+                delay = min(30 * (2 ** (attempt - 1)), 300) + random.uniform(0, 15)
+                print(f"Rate limited (JSON), retrying in {delay:.0f}s...")
                 time.sleep(delay)
                 continue
+<<<<<<< HEAD
             print("Rate limit exceeded after all retries — will use CDN data", file=sys.stderr)
+=======
+            print("Rate limit exceeded after all retries", file=sys.stderr)
+>>>>>>> b608c04... fix: skip writing data files when only timestamps changed to prevent empty commits
             return None
 
         if not data.get("success"):
@@ -155,6 +178,7 @@ def fetch_records() -> list[dict] | None:
         print(f"Fetched {len(records)} records")
         return records
 
+<<<<<<< HEAD
     print("All retry attempts exhausted — will use CDN data", file=sys.stderr)
     return None
 
@@ -173,6 +197,10 @@ def load_existing_history() -> list[dict]:
     except Exception as e:
         print(f"  Could not load CDN history (will fetch all from API): {e}")
         return []
+=======
+    print("All retry attempts exhausted", file=sys.stderr)
+    return None
+>>>>>>> b608c04... fix: skip writing data files when only timestamps changed to prevent empty commits
 
 
 def group_into_rounds(records: list[dict]) -> list[dict]:
@@ -230,6 +258,31 @@ def write_json(path: Path, data) -> None:
         json.dump(data, f, indent=2, ensure_ascii=False)
         f.write("\n")
     print(f"Wrote {path} ({path.stat().st_size} bytes)")
+
+
+# Keys that change every run and should be ignored when comparing data
+_TIMESTAMP_KEYS = {"lastUpdated", "generatedAt"}
+
+
+def _strip_timestamps(obj):
+    """Return a copy of obj with timestamp-only keys removed (for comparison)."""
+    if isinstance(obj, dict):
+        return {k: _strip_timestamps(v) for k, v in obj.items() if k not in _TIMESTAMP_KEYS}
+    if isinstance(obj, list):
+        return [_strip_timestamps(item) for item in obj]
+    return obj
+
+
+def _data_changed(path: Path, new_data) -> bool:
+    """Return True if the substantive data (ignoring timestamps) has changed."""
+    if not path.exists():
+        return True
+    try:
+        with open(path) as f:
+            existing = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return True
+    return _strip_timestamps(existing) != _strip_timestamps(new_data)
 
 
 def build_analytics(rounds: list[dict]) -> dict:
@@ -346,6 +399,7 @@ def main():
     # Fetch only the most recent records from data.gov.sg
     records = fetch_records()
 
+<<<<<<< HEAD
     if records is None:
         # API unavailable — fall back to existing CDN data
         if not existing_rounds:
@@ -357,6 +411,16 @@ def main():
         if not records:
             print("No records returned, skipping write", file=sys.stderr)
             sys.exit(1)
+=======
+    if not records:
+        # Check if existing data files can serve as fallback
+        history_file = OUTPUT_DIR / "history.json"
+        if history_file.exists() and history_file.stat().st_size > 0:
+            print("WARNING: Fetch failed but existing data files are present — skipping update")
+            sys.exit(0)
+        print("No records and no existing data files — cannot proceed", file=sys.stderr)
+        sys.exit(1)
+>>>>>>> b608c04... fix: skip writing data files when only timestamps changed to prevent empty commits
 
         new_rounds = group_into_rounds(records)
         print(f"Grouped {len(new_rounds)} rounds from API")
@@ -373,17 +437,26 @@ def main():
             sys.exit(1)
 
     snapshot = build_latest_snapshot(rounds)
-
-    write_json(OUTPUT_DIR / "latest.json", snapshot)
-    write_json(OUTPUT_DIR / "history.json", rounds)
-
-    # Pre-computed analytics
     analytics = build_analytics(rounds)
-    write_json(OUTPUT_DIR / "analytics.json", analytics)
-
-    # Bidding schedule
     schedule = build_schedule()
-    write_json(OUTPUT_DIR / "schedule.json", schedule)
+
+    files = {
+        OUTPUT_DIR / "latest.json": snapshot,
+        OUTPUT_DIR / "history.json": rounds,
+        OUTPUT_DIR / "analytics.json": analytics,
+        OUTPUT_DIR / "schedule.json": schedule,
+    }
+
+    changed = False
+    for path, data in files.items():
+        if _data_changed(path, data):
+            write_json(path, data)
+            changed = True
+        else:
+            print(f"No data change for {path.name}, skipping write")
+
+    if not changed:
+        print("\nNo data changes detected — nothing to update")
 
     # Summary
     latest = rounds[0]
