@@ -1,8 +1,8 @@
 {
   "categories": {
     "A": {
-      "average": 64838,
-      "median": 57898,
+      "average": 65408,
+      "median": 58801,
       "min": {
         "price": 23568,
         "date": "2018-12-05T08:00:00Z"
@@ -11,12 +11,12 @@
         "price": 128105,
         "date": "2025-10-01T08:00:00Z"
       },
-      "yoyChange": 20276,
-      "dataPoints": 205
+      "yoyChange": 21781,
+      "dataPoints": 207
     },
     "B": {
-      "average": 78501,
-      "median": 82001,
+      "average": 78937,
+      "median": 82801,
       "min": {
         "price": 30012,
         "date": "2020-03-18T08:00:00Z"
@@ -25,12 +25,12 @@
         "price": 150001,
         "date": "2023-10-18T08:00:00Z"
       },
-      "yoyChange": 3101,
-      "dataPoints": 205
+      "yoyChange": 6346,
+      "dataPoints": 207
     },
     "C": {
-      "average": 51994,
-      "median": 48889,
+      "average": 52318,
+      "median": 48902,
       "min": {
         "price": 22002,
         "date": "2020-03-18T08:00:00Z"
@@ -39,11 +39,11 @@
         "price": 91101,
         "date": "2023-03-01T08:00:00Z"
       },
-      "yoyChange": 11219,
-      "dataPoints": 205
+      "yoyChange": 24889,
+      "dataPoints": 207
     },
     "D": {
-      "average": 7991,
+      "average": 8004,
       "median": 8689,
       "min": {
         "price": 2509,
@@ -53,12 +53,12 @@
         "price": 13189,
         "date": "2022-11-02T08:00:00Z"
       },
-      "yoyChange": 111,
-      "dataPoints": 205
+      "yoyChange": 743,
+      "dataPoints": 207
     },
     "E": {
-      "average": 79947,
-      "median": 86001,
+      "average": 80395,
+      "median": 87000,
       "min": {
         "price": 30851,
         "date": "2018-12-05T08:00:00Z"
@@ -67,10 +67,10 @@
         "price": 158004,
         "date": "2023-10-18T08:00:00Z"
       },
-      "yoyChange": 3999,
-      "dataPoints": 205
+      "yoyChange": 8811,
+      "dataPoints": 207
     }
   },
-  "totalRounds": 205,
-  "generatedAt": "2026-05-05T03:28:28Z"
+  "totalRounds": 207,
+  "generatedAt": "2026-05-11T15:20:44Z"
 }
