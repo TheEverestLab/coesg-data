@@ -1,8 +1,8 @@
 {
   "categories": {
     "A": {
-      "average": 65980,
-      "median": 60761,
+      "average": 66255,
+      "median": 61880,
       "min": {
         "price": 23568,
         "date": "2018-12-05T08:00:00Z"
@@ -11,12 +11,12 @@
         "price": 128105,
         "date": "2025-10-01T08:00:00Z"
       },
-      "yoyChange": 29010,
-      "dataPoints": 209
+      "yoyChange": 25723,
+      "dataPoints": 210
     },
     "B": {
-      "average": 79409,
-      "median": 85010,
+      "average": 79619,
+      "median": 85556,
       "min": {
         "price": 30012,
         "date": "2020-03-18T08:00:00Z"
@@ -25,12 +25,12 @@
         "price": 150001,
         "date": "2023-10-18T08:00:00Z"
       },
-      "yoyChange": 13989,
-      "dataPoints": 209
+      "yoyChange": 6832,
+      "dataPoints": 210
     },
     "C": {
-      "average": 52708,
-      "median": 50890,
+      "average": 52900,
+      "median": 51195,
       "min": {
         "price": 22002,
         "date": "2020-03-18T08:00:00Z"
@@ -39,12 +39,12 @@
         "price": 94000,
         "date": "2026-06-03T08:00:00Z"
       },
-      "yoyChange": 32000,
-      "dataPoints": 209
+      "yoyChange": 28001,
+      "dataPoints": 210
     },
     "D": {
-      "average": 8022,
-      "median": 8701,
+      "average": 8031,
+      "median": 8702,
       "min": {
         "price": 2509,
         "date": "2018-11-07T08:00:00Z"
@@ -53,12 +53,12 @@
         "price": 13189,
         "date": "2022-11-02T08:00:00Z"
       },
-      "yoyChange": 1000,
-      "dataPoints": 209
+      "yoyChange": 1389,
+      "dataPoints": 210
     },
     "E": {
-      "average": 80865,
-      "median": 88000,
+      "average": 81094,
+      "median": 89556,
       "min": {
         "price": 30851,
         "date": "2018-12-05T08:00:00Z"
@@ -67,10 +67,10 @@
         "price": 158004,
         "date": "2023-10-18T08:00:00Z"
       },
-      "yoyChange": 15100,
-      "dataPoints": 209
+      "yoyChange": 12113,
+      "dataPoints": 210
     }
   },
-  "totalRounds": 209,
-  "generatedAt": "2026-06-05T09:59:27Z"
+  "totalRounds": 210,
+  "generatedAt": "2026-06-23T09:50:22Z"
 }
