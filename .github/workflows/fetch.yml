@@ -8,6 +8,12 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   fetch:
@@ -38,3 +44,38 @@ jobs:
           git add v1/latest.json v1/history.json v1/analytics.json v1/schedule.json
           git commit -m "chore: update COE data $(date -u +'%Y-%m-%d %H:%M UTC')"
           git push
+
+  # Publish to GitHub Pages from THIS workflow.
+  #
+  # Why: pushes made with the default GITHUB_TOKEN (the "Commit and push" step
+  # above) deliberately do not trigger other workflows, so deploy.yml's `on:
+  # push` never fired for data commits. Between 2026-03-28 and 2026-07-28 the
+  # CDN kept serving March prices while the repo held current data.
+  #
+  # This job runs on every fetch (not only when data changed) so a single failed
+  # deploy can't leave the CDN stale until the next data change.
+  deploy:
+    needs: fetch
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
