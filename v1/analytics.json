@@ -1,36 +1,36 @@
 {
   "categories": {
     "A": {
-      "average": 124727,
-      "median": 124509,
+      "average": 125480,
+      "median": 124790,
       "min": {
         "price": 118000,
         "date": "2026-04-01T08:00:00Z"
       },
       "max": {
-        "price": 129000,
-        "date": "2026-07-01T08:00:00Z"
+        "price": 133009,
+        "date": "2026-09-02T08:00:00Z"
       },
-      "yoyChange": 10501,
-      "dataPoints": 10
+      "yoyChange": 15009,
+      "dataPoints": 11
     },
     "B": {
-      "average": 126991,
-      "median": 128245,
+      "average": 127720,
+      "median": 129501,
       "min": {
         "price": 121000,
         "date": "2026-04-01T08:00:00Z"
       },
       "max": {
-        "price": 131001,
-        "date": "2026-08-19T08:00:00Z"
+        "price": 135001,
+        "date": "2026-09-02T08:00:00Z"
       },
-      "yoyChange": 10001,
-      "dataPoints": 10
+      "yoyChange": 14001,
+      "dataPoints": 11
     },
     "C": {
-      "average": 90064,
-      "median": 91884,
+      "average": 90340,
+      "median": 92223,
       "min": {
         "price": 80001,
         "date": "2026-04-01T08:00:00Z"
@@ -39,38 +39,38 @@
         "price": 95000,
         "date": "2026-07-01T08:00:00Z"
       },
-      "yoyChange": 10001,
-      "dataPoints": 10
+      "yoyChange": 13100,
+      "dataPoints": 11
     },
     "D": {
-      "average": 10062,
+      "average": 10289,
       "median": 10000,
       "min": {
         "price": 9290,
         "date": "2026-04-15T08:00:00Z"
       },
       "max": {
-        "price": 11301,
-        "date": "2026-08-19T08:00:00Z"
+        "price": 12556,
+        "date": "2026-09-02T08:00:00Z"
       },
-      "yoyChange": 1301,
-      "dataPoints": 10
+      "yoyChange": 2556,
+      "dataPoints": 11
     },
     "E": {
-      "average": 128747,
-      "median": 129401,
+      "average": 129578,
+      "median": 129801,
       "min": {
         "price": 121001,
         "date": "2026-04-01T08:00:00Z"
       },
       "max": {
-        "price": 135000,
-        "date": "2026-08-19T08:00:00Z"
+        "price": 137890,
+        "date": "2026-09-02T08:00:00Z"
       },
-      "yoyChange": 13999,
-      "dataPoints": 10
+      "yoyChange": 16889,
+      "dataPoints": 11
     }
   },
-  "totalRounds": 10,
-  "generatedAt": "2026-09-08T10:55:23Z"
+  "totalRounds": 11,
+  "generatedAt": "2026-09-09T10:59:38Z"
 }
