@@ -1,11 +1,6 @@
 {
   "upcoming": [
     {
-      "closingDate": "2026-09-16T08:00:00Z",
-      "roundLabel": "Sep 2026 Ex 2",
-      "exerciseNumber": 2
-    },
-    {
       "closingDate": "2026-10-07T08:00:00Z",
       "roundLabel": "Oct 2026 Ex 1",
       "exerciseNumber": 1
@@ -19,7 +14,12 @@
       "closingDate": "2026-11-04T08:00:00Z",
       "roundLabel": "Nov 2026 Ex 1",
       "exerciseNumber": 1
+    },
+    {
+      "closingDate": "2026-11-18T08:00:00Z",
+      "roundLabel": "Nov 2026 Ex 2",
+      "exerciseNumber": 2
     }
   ],
-  "generatedAt": "2026-09-02T10:56:11Z"
+  "generatedAt": "2026-09-16T11:09:36Z"
 }
