@@ -1,8 +1,8 @@
 {
   "categories": {
     "A": {
-      "average": 125480,
-      "median": 124790,
+      "average": 126014,
+      "median": 125395,
       "min": {
         "price": 118000,
         "date": "2026-04-01T08:00:00Z"
@@ -11,12 +11,12 @@
         "price": 133009,
         "date": "2026-09-02T08:00:00Z"
       },
-      "yoyChange": 15009,
-      "dataPoints": 11
+      "yoyChange": 13890,
+      "dataPoints": 12
     },
     "B": {
-      "average": 127720,
-      "median": 129501,
+      "average": 128160,
+      "median": 129695,
       "min": {
         "price": 121000,
         "date": "2026-04-01T08:00:00Z"
@@ -25,12 +25,12 @@
         "price": 135001,
         "date": "2026-09-02T08:00:00Z"
       },
-      "yoyChange": 14001,
-      "dataPoints": 11
+      "yoyChange": 12000,
+      "dataPoints": 12
     },
     "C": {
-      "average": 90340,
-      "median": 92223,
+      "average": 90490,
+      "median": 92183,
       "min": {
         "price": 80001,
         "date": "2026-04-01T08:00:00Z"
@@ -39,12 +39,12 @@
         "price": 95000,
         "date": "2026-07-01T08:00:00Z"
       },
-      "yoyChange": 13100,
-      "dataPoints": 11
+      "yoyChange": 12143,
+      "dataPoints": 12
     },
     "D": {
-      "average": 10289,
-      "median": 10000,
+      "average": 10448,
+      "median": 10100,
       "min": {
         "price": 9290,
         "date": "2026-04-15T08:00:00Z"
@@ -53,12 +53,12 @@
         "price": 12556,
         "date": "2026-09-02T08:00:00Z"
       },
-      "yoyChange": 2556,
-      "dataPoints": 11
+      "yoyChange": 2201,
+      "dataPoints": 12
     },
     "E": {
-      "average": 129578,
-      "median": 129801,
+      "average": 130197,
+      "median": 129886,
       "min": {
         "price": 121001,
         "date": "2026-04-01T08:00:00Z"
@@ -67,10 +67,10 @@
         "price": 137890,
         "date": "2026-09-02T08:00:00Z"
       },
-      "yoyChange": 16889,
-      "dataPoints": 11
+      "yoyChange": 15999,
+      "dataPoints": 12
     }
   },
-  "totalRounds": 11,
-  "generatedAt": "2026-09-09T10:59:38Z"
+  "totalRounds": 12,
+  "generatedAt": "2026-09-23T11:06:42Z"
 }
