@@ -1,76 +1,76 @@
 {
   "categories": {
     "A": {
-      "average": 126014,
-      "median": 125395,
+      "average": 67990,
+      "median": 68251,
       "min": {
-        "price": 118000,
-        "date": "2026-04-01T08:00:00Z"
+        "price": 23568,
+        "date": "2018-12-05T08:00:00Z"
       },
       "max": {
         "price": 133009,
         "date": "2026-09-02T08:00:00Z"
       },
-      "yoyChange": 13890,
-      "dataPoints": 12
+      "yoyChange": 12887,
+      "dataPoints": 216
     },
     "B": {
-      "average": 128160,
-      "median": 129695,
+      "average": 81063,
+      "median": 92840,
       "min": {
-        "price": 121000,
-        "date": "2026-04-01T08:00:00Z"
+        "price": 30012,
+        "date": "2020-03-18T08:00:00Z"
       },
       "max": {
-        "price": 135001,
-        "date": "2026-09-02T08:00:00Z"
+        "price": 150001,
+        "date": "2023-10-18T08:00:00Z"
       },
-      "yoyChange": 12000,
-      "dataPoints": 12
+      "yoyChange": -3890,
+      "dataPoints": 216
     },
     "C": {
-      "average": 90490,
-      "median": 92183,
+      "average": 54003,
+      "median": 51946,
       "min": {
-        "price": 80001,
-        "date": "2026-04-01T08:00:00Z"
+        "price": 22002,
+        "date": "2020-03-18T08:00:00Z"
       },
       "max": {
         "price": 95000,
         "date": "2026-07-01T08:00:00Z"
       },
-      "yoyChange": 12143,
-      "dataPoints": 12
+      "yoyChange": 19643,
+      "dataPoints": 216
     },
     "D": {
-      "average": 10448,
-      "median": 10100,
+      "average": 8118,
+      "median": 8719,
       "min": {
-        "price": 9290,
-        "date": "2026-04-15T08:00:00Z"
+        "price": 2509,
+        "date": "2018-11-07T08:00:00Z"
       },
       "max": {
-        "price": 12556,
-        "date": "2026-09-02T08:00:00Z"
+        "price": 13189,
+        "date": "2022-11-02T08:00:00Z"
       },
-      "yoyChange": 2201,
-      "dataPoints": 12
+      "yoyChange": 2992,
+      "dataPoints": 216
     },
     "E": {
-      "average": 130197,
-      "median": 129886,
+      "average": 82549,
+      "median": 94508,
       "min": {
-        "price": 121001,
-        "date": "2026-04-01T08:00:00Z"
+        "price": 30851,
+        "date": "2018-12-05T08:00:00Z"
       },
       "max": {
-        "price": 137890,
-        "date": "2026-09-02T08:00:00Z"
+        "price": 158004,
+        "date": "2023-10-18T08:00:00Z"
       },
-      "yoyChange": 15999,
-      "dataPoints": 12
+      "yoyChange": -3502,
+      "dataPoints": 216
     }
   },
-  "totalRounds": 12,
-  "generatedAt": "2026-09-23T11:06:42Z"
+  "totalRounds": 216,
+  "generatedAt": "2026-09-30T10:11:13Z"
 }

@@ -161,7 +161,22 @@ def fetch_records() -> list[dict] | None:
 
 
 def load_existing_history() -> list[dict]:
-    """Load existing history from CDN to avoid re-fetching immutable historical data."""
+    """Load existing history so immutable rounds are never re-fetched.
+
+    The committed v1/history.json in the checkout is the source of truth. The CDN
+    is only a fallback: on 2026-09-08 a failed CDN read during a Pages deploy was
+    treated as "no history", the API's 50 most recent records were published on
+    their own, and every later run read that truncated file back — 214 rounds
+    shrank to 10 and stayed that way.
+    """
+    local = OUTPUT_DIR / "history.json"
+    if local.exists():
+        try:
+            existing = json.loads(local.read_text())
+            print(f"Loaded {len(existing)} existing rounds from {local}")
+            return existing
+        except Exception as e:
+            print(f"  Could not read {local}: {e}", file=sys.stderr)
     try:
         print(f"Loading existing history from CDN...")
         ctx = _make_ssl_context()
@@ -397,6 +412,13 @@ def main():
         if not rounds:
             print("No rounds after merge, skipping write", file=sys.stderr)
             sys.exit(1)
+
+    # History only ever grows. Publishing fewer rounds than we started with means
+    # the existing history failed to load — refuse rather than overwrite it.
+    if len(rounds) < len(existing_rounds):
+        print(f"Refusing to shrink history: {len(existing_rounds)} -> {len(rounds)} rounds",
+              file=sys.stderr)
+        sys.exit(1)
 
     snapshot = build_latest_snapshot(rounds)
     analytics = build_analytics(rounds)
