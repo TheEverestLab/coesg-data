@@ -17,7 +17,7 @@ import sys
 import time
 import urllib.request
 import urllib.error
-from datetime import datetime, timezone, timedelta
+from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 from calendar import monthrange
 
@@ -62,16 +62,28 @@ def nth_weekday_of_month(year: int, month: int, weekday: int, n: int) -> int:
     return min(day, max_day)
 
 
+def closing_day(year: int, month: int, exercise: int) -> date:
+    """Closing day (a Wednesday) of the 1st or 2nd bidding exercise of a month.
+
+    LTA opens each exercise at 12 noon on the 1st or 3rd MONDAY of the month and closes
+    it at 4 pm on the Wednesday two days later. This is not the 1st/3rd Wednesday: in a
+    month that starts on a Tuesday or Wednesday the two differ by a week (Sep 2026 Ex 1
+    closed 9 Sep, not 2 Sep). Public holidays can still move a round; LTA's published
+    calendar wins over this rule.
+    """
+    monday = nth_weekday_of_month(year, month, 0, 1 if exercise == 1 else 3)  # 0 = Monday
+    return date(year, month, monday) + timedelta(days=2)
+
+
 def bidding_date_for(month_str: str, bidding_no: int) -> str:
     """
-    Compute the bidding close datetime for a round.
-    Bidding closes at 16:00 SGT (08:00 UTC) on the 1st or 3rd Wednesday.
+    Compute the bidding close datetime for a round: 16:00 SGT (08:00 UTC) on the
+    Wednesday after the 1st or 3rd Monday (see closing_day).
     Returns ISO 8601 string in UTC (Z suffix) for maximum Swift compatibility.
     """
     year, month = int(month_str[:4]), int(month_str[5:7])
-    ordinal = 1 if bidding_no == 1 else 3
-    wed_day = nth_weekday_of_month(year, month, 2, ordinal)  # 2 = Wednesday (0=Mon)
-    dt_sgt = datetime(year, month, wed_day, 16, 0, 0, tzinfo=SGT)
+    d = closing_day(year, month, bidding_no)
+    dt_sgt = datetime(d.year, d.month, d.day, 16, 0, 0, tzinfo=SGT)
     dt_utc = dt_sgt.astimezone(timezone.utc)
     return dt_utc.strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -346,8 +358,8 @@ def build_schedule() -> dict:
         for ex in (1, 3):
             if exercise > 1 and ex < exercise:
                 continue
-            wed_day = nth_weekday_of_month(year, month, 2, ex)  # 2 = Wednesday
-            closing_sgt = datetime(year, month, wed_day, 16, 0, 0, tzinfo=SGT)
+            d = closing_day(year, month, 1 if ex == 1 else 2)
+            closing_sgt = datetime(d.year, d.month, d.day, 16, 0, 0, tzinfo=SGT)
 
             if closing_sgt <= now_sgt:
                 continue
@@ -382,6 +394,11 @@ def build_schedule() -> dict:
 def main():
     # Load existing CDN data first (avoids re-fetching immutable history)
     existing_rounds = load_existing_history()
+    # Dates are derived from the round id ("2026-09-1"), so re-derive them every run: rounds
+    # saved under the old 1st/3rd-Wednesday rule were a week early in 62 of 217 rounds.
+    for r in existing_rounds:
+        month_str, _, no = r["id"].rpartition("-")
+        r["biddingDate"] = bidding_date_for(month_str, int(no))
     existing_by_id = {r["id"]: r for r in existing_rounds}
 
     # Fetch only the most recent records from data.gov.sg

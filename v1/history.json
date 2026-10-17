@@ -34,7 +34,7 @@
   },
   {
     "id": "2026-09-2",
-    "biddingDate": "2026-09-16T08:00:00Z",
+    "biddingDate": "2026-09-23T08:00:00Z",
     "roundLabel": "Sep 2026 Ex 2",
     "prices": {
       "A": 131890,
@@ -67,7 +67,7 @@
   },
   {
     "id": "2026-09-1",
-    "biddingDate": "2026-09-02T08:00:00Z",
+    "biddingDate": "2026-09-09T08:00:00Z",
     "roundLabel": "Sep 2026 Ex 1",
     "prices": {
       "A": 133009,
@@ -166,7 +166,7 @@
   },
   {
     "id": "2026-07-2",
-    "biddingDate": "2026-07-15T08:00:00Z",
+    "biddingDate": "2026-07-22T08:00:00Z",
     "roundLabel": "Jul 2026 Ex 2",
     "prices": {
       "A": 126000,
@@ -199,7 +199,7 @@
   },
   {
     "id": "2026-07-1",
-    "biddingDate": "2026-07-01T08:00:00Z",
+    "biddingDate": "2026-07-08T08:00:00Z",
     "roundLabel": "Jul 2026 Ex 1",
     "prices": {
       "A": 129000,
@@ -364,7 +364,7 @@
   },
   {
     "id": "2026-04-2",
-    "biddingDate": "2026-04-15T08:00:00Z",
+    "biddingDate": "2026-04-22T08:00:00Z",
     "roundLabel": "Apr 2026 Ex 2",
     "prices": {
       "A": 123010,
@@ -397,7 +397,7 @@
   },
   {
     "id": "2026-04-1",
-    "biddingDate": "2026-04-01T08:00:00Z",
+    "biddingDate": "2026-04-08T08:00:00Z",
     "roundLabel": "Apr 2026 Ex 1",
     "prices": {
       "A": 118000,
@@ -760,7 +760,7 @@
   },
   {
     "id": "2025-10-2",
-    "biddingDate": "2025-10-15T08:00:00Z",
+    "biddingDate": "2025-10-22T08:00:00Z",
     "roundLabel": "Oct 2025 Ex 2",
     "prices": {
       "A": 122000,
@@ -793,7 +793,7 @@
   },
   {
     "id": "2025-10-1",
-    "biddingDate": "2025-10-01T08:00:00Z",
+    "biddingDate": "2025-10-08T08:00:00Z",
     "roundLabel": "Oct 2025 Ex 1",
     "prices": {
       "A": 128105,
@@ -958,7 +958,7 @@
   },
   {
     "id": "2025-07-2",
-    "biddingDate": "2025-07-16T08:00:00Z",
+    "biddingDate": "2025-07-23T08:00:00Z",
     "roundLabel": "Jul 2025 Ex 2",
     "prices": {
       "A": 101102,
@@ -991,7 +991,7 @@
   },
   {
     "id": "2025-07-1",
-    "biddingDate": "2025-07-02T08:00:00Z",
+    "biddingDate": "2025-07-09T08:00:00Z",
     "roundLabel": "Jul 2025 Ex 1",
     "prices": {
       "A": 101102,
@@ -1156,7 +1156,7 @@
   },
   {
     "id": "2025-04-2",
-    "biddingDate": "2025-04-16T08:00:00Z",
+    "biddingDate": "2025-04-23T08:00:00Z",
     "roundLabel": "Apr 2025 Ex 2",
     "prices": {
       "A": 99500,
@@ -1189,7 +1189,7 @@
   },
   {
     "id": "2025-04-1",
-    "biddingDate": "2025-04-02T08:00:00Z",
+    "biddingDate": "2025-04-09T08:00:00Z",
     "roundLabel": "Apr 2025 Ex 1",
     "prices": {
       "A": 97724,
@@ -1354,7 +1354,7 @@
   },
   {
     "id": "2025-01-2",
-    "biddingDate": "2025-01-15T08:00:00Z",
+    "biddingDate": "2025-01-22T08:00:00Z",
     "roundLabel": "Jan 2025 Ex 2",
     "prices": {
       "A": 93601,
@@ -1387,7 +1387,7 @@
   },
   {
     "id": "2025-01-1",
-    "biddingDate": "2025-01-01T08:00:00Z",
+    "biddingDate": "2025-01-08T08:00:00Z",
     "roundLabel": "Jan 2025 Ex 1",
     "prices": {
       "A": 93699,
@@ -1552,7 +1552,7 @@
   },
   {
     "id": "2024-10-2",
-    "biddingDate": "2024-10-16T08:00:00Z",
+    "biddingDate": "2024-10-23T08:00:00Z",
     "roundLabel": "Oct 2024 Ex 2",
     "prices": {
       "A": 102900,
@@ -1585,7 +1585,7 @@
   },
   {
     "id": "2024-10-1",
-    "biddingDate": "2024-10-02T08:00:00Z",
+    "biddingDate": "2024-10-09T08:00:00Z",
     "roundLabel": "Oct 2024 Ex 1",
     "prices": {
       "A": 103799,
@@ -1882,7 +1882,7 @@
   },
   {
     "id": "2024-05-2",
-    "biddingDate": "2024-05-15T08:00:00Z",
+    "biddingDate": "2024-05-22T08:00:00Z",
     "roundLabel": "May 2024 Ex 2",
     "prices": {
       "A": 92700,
@@ -1915,7 +1915,7 @@
   },
   {
     "id": "2024-05-1",
-    "biddingDate": "2024-05-01T08:00:00Z",
+    "biddingDate": "2024-05-08T08:00:00Z",
     "roundLabel": "May 2024 Ex 1",
     "prices": {
       "A": 93604,
@@ -2278,7 +2278,7 @@
   },
   {
     "id": "2023-11-2",
-    "biddingDate": "2023-11-15T08:00:00Z",
+    "biddingDate": "2023-11-22T08:00:00Z",
     "roundLabel": "Nov 2023 Ex 2",
     "prices": {
       "A": 85001,
@@ -2311,7 +2311,7 @@
   },
   {
     "id": "2023-11-1",
-    "biddingDate": "2023-11-01T08:00:00Z",
+    "biddingDate": "2023-11-08T08:00:00Z",
     "roundLabel": "Nov 2023 Ex 1",
     "prices": {
       "A": 95689,
@@ -2476,7 +2476,7 @@
   },
   {
     "id": "2023-08-2",
-    "biddingDate": "2023-08-16T08:00:00Z",
+    "biddingDate": "2023-08-23T08:00:00Z",
     "roundLabel": "Aug 2023 Ex 2",
     "prices": {
       "A": 100000,
@@ -2509,7 +2509,7 @@
   },
   {
     "id": "2023-08-1",
-    "biddingDate": "2023-08-02T08:00:00Z",
+    "biddingDate": "2023-08-09T08:00:00Z",
     "roundLabel": "Aug 2023 Ex 1",
     "prices": {
       "A": 99499,
@@ -2806,7 +2806,7 @@
   },
   {
     "id": "2023-03-2",
-    "biddingDate": "2023-03-15T08:00:00Z",
+    "biddingDate": "2023-03-22T08:00:00Z",
     "roundLabel": "Mar 2023 Ex 2",
     "prices": {
       "A": 93503,
@@ -2839,7 +2839,7 @@
   },
   {
     "id": "2023-03-1",
-    "biddingDate": "2023-03-01T08:00:00Z",
+    "biddingDate": "2023-03-08T08:00:00Z",
     "roundLabel": "Mar 2023 Ex 1",
     "prices": {
       "A": 88000,
@@ -2872,7 +2872,7 @@
   },
   {
     "id": "2023-02-2",
-    "biddingDate": "2023-02-15T08:00:00Z",
+    "biddingDate": "2023-02-22T08:00:00Z",
     "roundLabel": "Feb 2023 Ex 2",
     "prices": {
       "A": 86556,
@@ -2905,7 +2905,7 @@
   },
   {
     "id": "2023-02-1",
-    "biddingDate": "2023-02-01T08:00:00Z",
+    "biddingDate": "2023-02-08T08:00:00Z",
     "roundLabel": "Feb 2023 Ex 1",
     "prices": {
       "A": 86000,
@@ -3070,7 +3070,7 @@
   },
   {
     "id": "2022-11-2",
-    "biddingDate": "2022-11-16T08:00:00Z",
+    "biddingDate": "2022-11-23T08:00:00Z",
     "roundLabel": "Nov 2022 Ex 2",
     "prices": {
       "A": 90589,
@@ -3103,7 +3103,7 @@
   },
   {
     "id": "2022-11-1",
-    "biddingDate": "2022-11-02T08:00:00Z",
+    "biddingDate": "2022-11-09T08:00:00Z",
     "roundLabel": "Nov 2022 Ex 1",
     "prices": {
       "A": 87235,
@@ -3400,7 +3400,7 @@
   },
   {
     "id": "2022-06-2",
-    "biddingDate": "2022-06-15T08:00:00Z",
+    "biddingDate": "2022-06-22T08:00:00Z",
     "roundLabel": "Jun 2022 Ex 2",
     "prices": {
       "A": 74989,
@@ -3433,7 +3433,7 @@
   },
   {
     "id": "2022-06-1",
-    "biddingDate": "2022-06-01T08:00:00Z",
+    "biddingDate": "2022-06-08T08:00:00Z",
     "roundLabel": "Jun 2022 Ex 1",
     "prices": {
       "A": 73801,
@@ -3598,7 +3598,7 @@
   },
   {
     "id": "2022-03-2",
-    "biddingDate": "2022-03-16T08:00:00Z",
+    "biddingDate": "2022-03-23T08:00:00Z",
     "roundLabel": "Mar 2022 Ex 2",
     "prices": {
       "A": 71556,
@@ -3631,7 +3631,7 @@
   },
   {
     "id": "2022-03-1",
-    "biddingDate": "2022-03-02T08:00:00Z",
+    "biddingDate": "2022-03-09T08:00:00Z",
     "roundLabel": "Mar 2022 Ex 1",
     "prices": {
       "A": 68501,
@@ -3664,7 +3664,7 @@
   },
   {
     "id": "2022-02-2",
-    "biddingDate": "2022-02-16T08:00:00Z",
+    "biddingDate": "2022-02-23T08:00:00Z",
     "roundLabel": "Feb 2022 Ex 2",
     "prices": {
       "A": 63000,
@@ -3697,7 +3697,7 @@
   },
   {
     "id": "2022-02-1",
-    "biddingDate": "2022-02-02T08:00:00Z",
+    "biddingDate": "2022-02-09T08:00:00Z",
     "roundLabel": "Feb 2022 Ex 1",
     "prices": {
       "A": 60761,
@@ -3796,7 +3796,7 @@
   },
   {
     "id": "2021-12-2",
-    "biddingDate": "2021-12-15T08:00:00Z",
+    "biddingDate": "2021-12-22T08:00:00Z",
     "roundLabel": "Dec 2021 Ex 2",
     "prices": {
       "A": 58801,
@@ -3829,7 +3829,7 @@
   },
   {
     "id": "2021-12-1",
-    "biddingDate": "2021-12-01T08:00:00Z",
+    "biddingDate": "2021-12-08T08:00:00Z",
     "roundLabel": "Dec 2021 Ex 1",
     "prices": {
       "A": 57010,
@@ -3994,7 +3994,7 @@
   },
   {
     "id": "2021-09-2",
-    "biddingDate": "2021-09-15T08:00:00Z",
+    "biddingDate": "2021-09-22T08:00:00Z",
     "roundLabel": "Sep 2021 Ex 2",
     "prices": {
       "A": 48000,
@@ -4027,7 +4027,7 @@
   },
   {
     "id": "2021-09-1",
-    "biddingDate": "2021-09-01T08:00:00Z",
+    "biddingDate": "2021-09-08T08:00:00Z",
     "roundLabel": "Sep 2021 Ex 1",
     "prices": {
       "A": 47000,
@@ -4192,7 +4192,7 @@
   },
   {
     "id": "2021-06-2",
-    "biddingDate": "2021-06-16T08:00:00Z",
+    "biddingDate": "2021-06-23T08:00:00Z",
     "roundLabel": "Jun 2021 Ex 2",
     "prices": {
       "A": 47821,
@@ -4225,7 +4225,7 @@
   },
   {
     "id": "2021-06-1",
-    "biddingDate": "2021-06-02T08:00:00Z",
+    "biddingDate": "2021-06-09T08:00:00Z",
     "roundLabel": "Jun 2021 Ex 1",
     "prices": {
       "A": 48510,
@@ -4588,7 +4588,7 @@
   },
   {
     "id": "2020-12-2",
-    "biddingDate": "2020-12-16T08:00:00Z",
+    "biddingDate": "2020-12-23T08:00:00Z",
     "roundLabel": "Dec 2020 Ex 2",
     "prices": {
       "A": 40556,
@@ -4621,7 +4621,7 @@
   },
   {
     "id": "2020-12-1",
-    "biddingDate": "2020-12-02T08:00:00Z",
+    "biddingDate": "2020-12-09T08:00:00Z",
     "roundLabel": "Dec 2020 Ex 1",
     "prices": {
       "A": 40714,
@@ -4786,7 +4786,7 @@
   },
   {
     "id": "2020-09-2",
-    "biddingDate": "2020-09-16T08:00:00Z",
+    "biddingDate": "2020-09-23T08:00:00Z",
     "roundLabel": "Sep 2020 Ex 2",
     "prices": {
       "A": 38504,
@@ -4819,7 +4819,7 @@
   },
   {
     "id": "2020-09-1",
-    "biddingDate": "2020-09-02T08:00:00Z",
+    "biddingDate": "2020-09-09T08:00:00Z",
     "roundLabel": "Sep 2020 Ex 1",
     "prices": {
       "A": 37766,
@@ -4918,7 +4918,7 @@
   },
   {
     "id": "2020-07-2",
-    "biddingDate": "2020-07-15T08:00:00Z",
+    "biddingDate": "2020-07-22T08:00:00Z",
     "roundLabel": "Jul 2020 Ex 2",
     "prices": {
       "A": 32699,
@@ -4951,7 +4951,7 @@
   },
   {
     "id": "2020-07-1",
-    "biddingDate": "2020-07-01T08:00:00Z",
+    "biddingDate": "2020-07-08T08:00:00Z",
     "roundLabel": "Jul 2020 Ex 1",
     "prices": {
       "A": 33520,
@@ -5116,7 +5116,7 @@
   },
   {
     "id": "2020-01-2",
-    "biddingDate": "2020-01-15T08:00:00Z",
+    "biddingDate": "2020-01-22T08:00:00Z",
     "roundLabel": "Jan 2020 Ex 2",
     "prices": {
       "A": 35010,
@@ -5149,7 +5149,7 @@
   },
   {
     "id": "2020-01-1",
-    "biddingDate": "2020-01-01T08:00:00Z",
+    "biddingDate": "2020-01-08T08:00:00Z",
     "roundLabel": "Jan 2020 Ex 1",
     "prices": {
       "A": 35320,
@@ -5314,7 +5314,7 @@
   },
   {
     "id": "2019-10-2",
-    "biddingDate": "2019-10-16T08:00:00Z",
+    "biddingDate": "2019-10-23T08:00:00Z",
     "roundLabel": "Oct 2019 Ex 2",
     "prices": {
       "A": 32309,
@@ -5347,7 +5347,7 @@
   },
   {
     "id": "2019-10-1",
-    "biddingDate": "2019-10-02T08:00:00Z",
+    "biddingDate": "2019-10-09T08:00:00Z",
     "roundLabel": "Oct 2019 Ex 1",
     "prices": {
       "A": 34001,
@@ -5644,7 +5644,7 @@
   },
   {
     "id": "2019-05-2",
-    "biddingDate": "2019-05-15T08:00:00Z",
+    "biddingDate": "2019-05-22T08:00:00Z",
     "roundLabel": "May 2019 Ex 2",
     "prices": {
       "A": 27000,
@@ -5677,7 +5677,7 @@
   },
   {
     "id": "2019-05-1",
-    "biddingDate": "2019-05-01T08:00:00Z",
+    "biddingDate": "2019-05-08T08:00:00Z",
     "roundLabel": "May 2019 Ex 1",
     "prices": {
       "A": 36704,
@@ -5908,7 +5908,7 @@
   },
   {
     "id": "2019-01-2",
-    "biddingDate": "2019-01-16T08:00:00Z",
+    "biddingDate": "2019-01-23T08:00:00Z",
     "roundLabel": "Jan 2019 Ex 2",
     "prices": {
       "A": 26170,
@@ -5941,7 +5941,7 @@
   },
   {
     "id": "2019-01-1",
-    "biddingDate": "2019-01-02T08:00:00Z",
+    "biddingDate": "2019-01-09T08:00:00Z",
     "roundLabel": "Jan 2019 Ex 1",
     "prices": {
       "A": 25920,
@@ -6238,7 +6238,7 @@
   },
   {
     "id": "2018-08-2",
-    "biddingDate": "2018-08-15T08:00:00Z",
+    "biddingDate": "2018-08-22T08:00:00Z",
     "roundLabel": "Aug 2018 Ex 2",
     "prices": {
       "A": 31997,
@@ -6271,7 +6271,7 @@
   },
   {
     "id": "2018-08-1",
-    "biddingDate": "2018-08-01T08:00:00Z",
+    "biddingDate": "2018-08-08T08:00:00Z",
     "roundLabel": "Aug 2018 Ex 1",
     "prices": {
       "A": 33798,
@@ -6436,7 +6436,7 @@
   },
   {
     "id": "2018-05-2",
-    "biddingDate": "2018-05-16T08:00:00Z",
+    "biddingDate": "2018-05-23T08:00:00Z",
     "roundLabel": "May 2018 Ex 2",
     "prices": {
       "A": 38001,
@@ -6469,7 +6469,7 @@
   },
   {
     "id": "2018-05-1",
-    "biddingDate": "2018-05-02T08:00:00Z",
+    "biddingDate": "2018-05-09T08:00:00Z",
     "roundLabel": "May 2018 Ex 1",
     "prices": {
       "A": 38941,
@@ -6832,7 +6832,7 @@
   },
   {
     "id": "2017-11-2",
-    "biddingDate": "2017-11-15T08:00:00Z",
+    "biddingDate": "2017-11-22T08:00:00Z",
     "roundLabel": "Nov 2017 Ex 2",
     "prices": {
       "A": 46791,
@@ -6865,7 +6865,7 @@
   },
   {
     "id": "2017-11-1",
-    "biddingDate": "2017-11-01T08:00:00Z",
+    "biddingDate": "2017-11-08T08:00:00Z",
     "roundLabel": "Nov 2017 Ex 1",
     "prices": {
       "A": 47112,
@@ -7030,7 +7030,7 @@
   },
   {
     "id": "2017-08-2",
-    "biddingDate": "2017-08-16T08:00:00Z",
+    "biddingDate": "2017-08-23T08:00:00Z",
     "roundLabel": "Aug 2017 Ex 2",
     "prices": {
       "A": 42900,
@@ -7063,7 +7063,7 @@
   },
   {
     "id": "2017-08-1",
-    "biddingDate": "2017-08-02T08:00:00Z",
+    "biddingDate": "2017-08-09T08:00:00Z",
     "roundLabel": "Aug 2017 Ex 1",
     "prices": {
       "A": 46778,
