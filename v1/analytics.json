@@ -9,7 +9,7 @@
       },
       "max": {
         "price": 133009,
-        "date": "2026-09-02T08:00:00Z"
+        "date": "2026-09-09T08:00:00Z"
       },
       "yoyChange": 1896,
       "dataPoints": 217
@@ -37,7 +37,7 @@
       },
       "max": {
         "price": 95000,
-        "date": "2026-07-01T08:00:00Z"
+        "date": "2026-07-08T08:00:00Z"
       },
       "yoyChange": 17588,
       "dataPoints": 217
@@ -51,7 +51,7 @@
       },
       "max": {
         "price": 13189,
-        "date": "2022-11-02T08:00:00Z"
+        "date": "2022-11-09T08:00:00Z"
       },
       "yoyChange": 1202,
       "dataPoints": 217
@@ -72,5 +72,5 @@
     }
   },
   "totalRounds": 217,
-  "generatedAt": "2026-10-07T12:57:17Z"
+  "generatedAt": "2026-10-17T15:15:30Z"
 }
