@@ -11,6 +11,7 @@ Run via CI:     .github/workflows/fetch.yml
 """
 
 import json
+import os
 import random
 import ssl
 import sys
@@ -248,6 +249,10 @@ def build_latest_snapshot(rounds: list[dict]) -> dict:
         "latestRound": rounds[0] if len(rounds) > 0 else None,
         "previousRound": rounds[1] if len(rounds) > 1 else None,
         "lastUpdated": now,
+        # Steer SG 1.6+: when true (and subscribed to coe_results_<lang>), the app skips its local
+        # "after results" notification because scripts/send_push.py delivers the real numbers.
+        # Set by the workflow only when the FCM_SERVICE_ACCOUNT secret exists.
+        "resultsPush": os.environ.get("RESULTS_PUSH") == "true",
     }
 
 
