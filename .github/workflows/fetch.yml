@@ -33,7 +33,9 @@ jobs:
 
       - name: Fetch and process COE data
         env:
-          RESULTS_PUSH: ${{ secrets.FCM_SERVICE_ACCOUNT != '' }}
+          # Owner switch (repo Settings → Variables → RESULTS_PUSH_LIVE = true), set only after a test push
+          # arrived on a real iPhone AND Android. Until then the apps keep their local "after results" reminder.
+          RESULTS_PUSH: ${{ vars.RESULTS_PUSH_LIVE == 'true' }}
         run: python3 scripts/fetch_coe_data.py
 
       - name: Check for changes
@@ -113,6 +115,7 @@ jobs:
           FCM_SERVICE_ACCOUNT: ${{ secrets.FCM_SERVICE_ACCOUNT }}
         run: python3 scripts/send_push.py
       - name: Record the pushed round
+        if: always()
         run: |
           if [ -n "$(git status --porcelain push/)" ]; then
             git config user.name "github-actions[bot]"

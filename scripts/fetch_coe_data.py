@@ -251,7 +251,7 @@ def build_latest_snapshot(rounds: list[dict]) -> dict:
         "lastUpdated": now,
         # Steer SG 1.6+: when true (and subscribed to coe_results_<lang>), the app skips its local
         # "after results" notification because scripts/send_push.py delivers the real numbers.
-        # Set by the workflow only when the FCM_SERVICE_ACCOUNT secret exists.
+        # Set by the workflow from the owner switch vars.RESULTS_PUSH_LIVE (after a confirmed device test).
         "resultsPush": os.environ.get("RESULTS_PUSH") == "true",
     }
 

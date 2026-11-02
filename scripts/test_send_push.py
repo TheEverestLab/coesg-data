@@ -24,6 +24,14 @@ class Decide(unittest.TestCase):
         # A round found days late (outage, holiday) must not buzz phones with old news.
         self.assertEqual(sp.decide(LATEST, "2026-10-1", "2026-10-24T09:00:00Z"), ("seed", "2026-10-2"))
 
+    def test_incomplete_round_waits(self):
+        # data.gov.sg caught mid-publish: wait for the next run instead of pushing (and recording) half a round.
+        partial = {"latestRound": dict(LATEST["latestRound"], prices={"A": 100000, "B": 99000}),
+                   "previousRound": LATEST["previousRound"]}
+        self.assertEqual(sp.decide(partial, "2026-10-1", "2026-10-21T09:00:00Z"), ("none", "2026-10-1"))
+        zero = {"latestRound": dict(LATEST["latestRound"], prices=dict(LATEST["latestRound"]["prices"], C=0))}
+        self.assertEqual(sp.decide(zero, "2026-10-1", "2026-10-21T09:00:00Z"), ("none", "2026-10-1"))
+
     def test_older_round_never_sends(self):
         self.assertEqual(sp.decide(LATEST, "2026-11-1", "2026-10-21T09:00:00Z"), ("none", "2026-11-1"))
 
@@ -55,11 +63,11 @@ class Text(unittest.TestCase):
 
 
 class Messages(unittest.TestCase):
-    def test_one_visible_message_per_language_plus_legacy_data_only(self):
+    def test_one_visible_message_per_language_and_no_legacy_topic(self):
         msgs = sp.build_messages(LATEST)
-        topics = [m["message"]["topic"] for m in msgs]
-        self.assertEqual(topics, ["coe_results_en", "coe_results_zh", "coe_results_ms", "coe_results_ta", "coe_results"])
-        for m in msgs[:4]:
+        self.assertEqual([m["message"]["topic"] for m in msgs],
+                         ["coe_results_en", "coe_results_zh", "coe_results_ms", "coe_results_ta"])
+        for m in msgs:
             msg = m["message"]
             self.assertIn("notification", msg)
             self.assertEqual(msg["data"], {"type": "coe_results", "round": "2026-10-2"})
@@ -67,10 +75,32 @@ class Messages(unittest.TestCase):
             self.assertEqual(msg["android"]["collapse_key"], "2026-10-2")
             self.assertEqual(msg["apns"]["headers"]["apns-priority"], "10")
             self.assertEqual(msg["apns"]["headers"]["apns-collapse-id"], "2026-10-2")
-        legacy = msgs[4]["message"]
-        self.assertNotIn("notification", legacy)
-        self.assertNotIn("apns", legacy)
-        self.assertEqual(legacy["data"]["type"], "coe_results")
+
+
+class Progress(unittest.TestCase):
+    """At most once per topic: a failed topic is retried next run, sent topics are not repeated."""
+
+    def test_sends_only_missing_topics_and_records_each(self):
+        sent = []
+        def post(m):
+            if m["message"]["topic"] == "coe_results_ms":
+                raise RuntimeError("HTTP 503")
+            sent.append(m["message"]["topic"])
+        state = {"round": "2026-10-2", "sent": ["coe_results_en"]}
+        state, errors = sp.send_missing(sp.build_messages(LATEST), state, post)
+        self.assertEqual(sent, ["coe_results_zh", "coe_results_ta"])
+        self.assertEqual(state["sent"], ["coe_results_en", "coe_results_zh", "coe_results_ta"])
+        self.assertEqual(len(errors), 1)
+        self.assertFalse(sp.complete(state))
+
+    def test_complete_when_every_language_sent(self):
+        self.assertTrue(sp.complete({"round": "x", "sent": [f"coe_results_{l}" for l in sp.LANGS]}))
+
+    def test_state_round_trip_accepts_old_plain_text(self):
+        self.assertEqual(sp.parse_state("2026-10-2\n"), {"round": "2026-10-2", "sent": "all"})
+        self.assertEqual(sp.parse_state('{"round": "2026-11-1", "sent": ["coe_results_en"]}'),
+                         {"round": "2026-11-1", "sent": ["coe_results_en"]})
+        self.assertIsNone(sp.parse_state(""))
 
 
 if __name__ == "__main__":

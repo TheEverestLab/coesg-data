@@ -5,9 +5,11 @@
     python3 scripts/send_push.py --dry-run  # print what would be sent
 
 - Topics `coe_results_<lang>` (en, zh, ms, ta) get a visible notification in that language (Steer SG 1.6+).
-- Legacy topic `coe_results` gets a data-only message (Android ≤ 1.5 runs its own background check on it).
-- `push/last_round.txt` remembers the last round pushed. First run (file missing) only seeds it, and a round found
-  more than STALE_HOURS after bidding closed is recorded but never sent, so phones never buzz with old news.
+- Nothing goes to the legacy topic `coe_results`: Android ≤ 1.5 subscribed every install to it and would show a
+  notification even to users who turned results off. Old apps keep their local reminder.
+- `push/last_round.txt` holds {"round", "sent": [topics] | "all"}. A topic is recorded as soon as it is sent, so a
+  failed topic is retried next run and sent topics are never repeated. First run only seeds; a round found more
+  than STALE_HOURS after bidding closed is recorded but never sent; a round missing any category waits.
 - No secret → prints "push disabled" and exits 0 (the apps keep their local "after results" notification).
 - Facts only: prices and change since the previous round. Never advice.
 Spec: COESG/docs/superpowers/specs/2026-11-02-theory-depth-result-push-design.md
@@ -27,7 +29,7 @@ STATE = ROOT / "push" / "last_round.txt"
 LANGS = ("en", "zh", "ms", "ta")
 CATS = ("A", "B", "C", "D", "E")
 STALE_HOURS = 36
-LEGACY_TOPIC = "coe_results"
+TOPIC_PREFIX = "coe_results_"
 
 TITLES = {
     "en": "COE results · {label}",
@@ -70,6 +72,8 @@ def decide(latest: dict, last_round: str | None, now_iso: str) -> tuple[str, str
         return "seed", rid
     if _key(rid) <= _key(last_round):
         return "none", last_round
+    if not all((rnd.get("prices") or {}).get(c, 0) > 0 for c in CATS):
+        return "none", last_round  # mid-publish: wait for the full round
     closed = dt.datetime.fromisoformat(rnd["biddingDate"].replace("Z", "+00:00"))
     now = dt.datetime.fromisoformat(now_iso.replace("Z", "+00:00"))
     if now - closed > dt.timedelta(hours=STALE_HOURS):
@@ -107,7 +111,7 @@ def build_messages(latest: dict) -> list[dict]:
     for lang in LANGS:
         title, body = message_text(latest, lang)
         out.append({"message": {
-            "topic": f"{LEGACY_TOPIC}_{lang}",
+            "topic": f"{TOPIC_PREFIX}{lang}",
             "notification": {"title": title, "body": body},
             "data": data,
             "android": {"priority": "high", "collapse_key": rid,
@@ -115,11 +119,39 @@ def build_messages(latest: dict) -> list[dict]:
             "apns": {"headers": {"apns-priority": "10", "apns-collapse-id": rid},
                      "payload": {"aps": {"sound": "default"}}},
         }})
-    out.append({"message": {"topic": LEGACY_TOPIC, "data": data, "android": {"priority": "high"}}})
     return out
 
 
-def _send(messages: list[dict], service_account: dict) -> None:
+def parse_state(text: str) -> dict | None:
+    text = (text or "").strip()
+    if not text:
+        return None
+    if text.startswith("{"):
+        return json.loads(text)
+    return {"round": text, "sent": "all"}  # pre-2026-11 plain round id
+
+
+def complete(state: dict) -> bool:
+    return state["sent"] == "all" or all(f"{TOPIC_PREFIX}{l}" in state["sent"] for l in LANGS)
+
+
+def send_missing(messages: list[dict], state: dict, post) -> tuple[dict, list[str]]:
+    """Send topics not yet in state['sent']; record each as it succeeds. Returns (state, errors)."""
+    sent = list(state["sent"]) if state["sent"] != "all" else []
+    errors = []
+    for m in messages:
+        topic = m["message"]["topic"]
+        if topic in sent:
+            continue
+        try:
+            post(m)
+            sent.append(topic)
+        except Exception as e:  # one bad topic must not block the others
+            errors.append(f"{topic}: {e}")
+    return {"round": state["round"], "sent": sent}, errors
+
+
+def _poster(service_account: dict):
     # Imported here so the pure functions above test without these packages.
     from google.oauth2 import service_account as sa
     import google.auth.transport.requests as gtr
@@ -129,11 +161,20 @@ def _send(messages: list[dict], service_account: dict) -> None:
         service_account, scopes=["https://www.googleapis.com/auth/firebase.messaging"])
     creds.refresh(gtr.Request())
     url = f"https://fcm.googleapis.com/v1/projects/{service_account['project_id']}/messages:send"
-    for m in messages:
+
+    def post(m: dict) -> None:
         r = requests.post(url, json=m, timeout=30, headers={"Authorization": f"Bearer {creds.token}"})
         if r.status_code != 200:
-            raise RuntimeError(f"FCM {m['message']['topic']}: HTTP {r.status_code} {r.text[:300]}")
+            raise RuntimeError(f"HTTP {r.status_code} {r.text[:300]}")
         print(f"sent to {m['message']['topic']}")
+    return post
+
+
+def _write_state(state: dict) -> None:
+    STATE.parent.mkdir(exist_ok=True)
+    if complete(state):
+        state = {"round": state["round"], "sent": "all"}
+    STATE.write_text(json.dumps(state) + "\n")
 
 
 def main() -> int:
@@ -142,25 +183,39 @@ def main() -> int:
     a = ap.parse_args()
 
     latest = json.loads(LATEST.read_text())
-    last = STATE.read_text().strip() if STATE.exists() else None
+    state = parse_state(STATE.read_text() if STATE.exists() else "")
     now = dt.datetime.now(dt.timezone.utc).isoformat()
-    action, rid = decide(latest, last or None, now)
-    print(f"push: last={last} latest={latest['latestRound']['id']} → {action}")
+    rid_now = latest["latestRound"]["id"]
+
+    if state and state["round"] == rid_now and not complete(state):
+        action, rid = "send", rid_now  # resume a round whose send was cut short
+        closed = dt.datetime.fromisoformat(latest["latestRound"]["biddingDate"].replace("Z", "+00:00"))
+        if dt.datetime.now(dt.timezone.utc) - closed > dt.timedelta(hours=STALE_HOURS):
+            action = "seed"
+    else:
+        action, rid = decide(latest, state["round"] if state else None, now)
+    print(f"push: state={state} latest={rid_now} → {action}")
     if action == "none":
         return 0
-    if action == "send":
-        msgs = build_messages(latest)
-        if a.dry_run:
-            print(json.dumps(msgs, indent=1, ensure_ascii=False))
-            return 0
-        raw = os.environ.get("FCM_SERVICE_ACCOUNT", "").strip()
-        if not raw:
-            print("push disabled (no FCM_SERVICE_ACCOUNT secret); round not recorded")
-            return 0
-        _send(msgs, json.loads(raw))
-    if not a.dry_run:
-        STATE.parent.mkdir(exist_ok=True)
-        STATE.write_text(rid + "\n")
+    if action == "seed":
+        if not a.dry_run:
+            _write_state({"round": rid, "sent": "all"})
+        return 0
+
+    msgs = build_messages(latest)
+    if a.dry_run:
+        print(json.dumps(msgs, indent=1, ensure_ascii=False))
+        return 0
+    raw = os.environ.get("FCM_SERVICE_ACCOUNT", "").strip()
+    if not raw:
+        print("push disabled (no FCM_SERVICE_ACCOUNT secret); round not recorded")
+        return 0
+    start = state if state and state["round"] == rid else {"round": rid, "sent": []}
+    new_state, errors = send_missing(msgs, start, _poster(json.loads(raw)))
+    _write_state(new_state)
+    if errors:
+        print("some topics failed (retried next run):\n" + "\n".join(errors), file=sys.stderr)
+        return 1
     return 0
 
 
