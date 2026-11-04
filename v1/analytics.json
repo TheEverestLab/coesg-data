@@ -1,22 +1,22 @@
 {
   "categories": {
     "A": {
-      "average": 68568,
-      "median": 68600,
+      "average": 68890,
+      "median": 68699,
       "min": {
         "price": 23568,
         "date": "2018-12-05T08:00:00Z"
       },
       "max": {
-        "price": 133009,
-        "date": "2026-09-09T08:00:00Z"
+        "price": 139001,
+        "date": "2026-11-04T08:00:00Z"
       },
-      "yoyChange": 10004,
-      "dataPoints": 218
+      "yoyChange": 28999,
+      "dataPoints": 219
     },
     "B": {
-      "average": 81522,
-      "median": 94239,
+      "average": 81754,
+      "median": 94889,
       "min": {
         "price": 30012,
         "date": "2020-03-18T08:00:00Z"
@@ -25,12 +25,12 @@
         "price": 150001,
         "date": "2023-10-18T08:00:00Z"
       },
-      "yoyChange": 12,
-      "dataPoints": 218
+      "yoyChange": 17333,
+      "dataPoints": 219
     },
     "C": {
-      "average": 54352,
-      "median": 52502,
+      "average": 54524,
+      "median": 53002,
       "min": {
         "price": 22002,
         "date": "2020-03-18T08:00:00Z"
@@ -39,12 +39,12 @@
         "price": 95000,
         "date": "2026-07-08T08:00:00Z"
       },
-      "yoyChange": 15399,
-      "dataPoints": 218
+      "yoyChange": 16000,
+      "dataPoints": 219
     },
     "D": {
-      "average": 8143,
-      "median": 8760,
+      "average": 8155,
+      "median": 8791,
       "min": {
         "price": 2509,
         "date": "2018-11-07T08:00:00Z"
@@ -53,12 +53,12 @@
         "price": 13189,
         "date": "2022-11-09T08:00:00Z"
       },
-      "yoyChange": 1389,
-      "dataPoints": 218
+      "yoyChange": 2089,
+      "dataPoints": 219
     },
     "E": {
-      "average": 83043,
-      "median": 95405,
+      "average": 83284,
+      "median": 95801,
       "min": {
         "price": 30851,
         "date": "2018-12-05T08:00:00Z"
@@ -67,10 +67,10 @@
         "price": 158004,
         "date": "2023-10-18T08:00:00Z"
       },
-      "yoyChange": -210,
-      "dataPoints": 218
+      "yoyChange": 14988,
+      "dataPoints": 219
     }
   },
-  "totalRounds": 218,
-  "generatedAt": "2026-10-21T11:25:47Z"
+  "totalRounds": 219,
+  "generatedAt": "2026-11-04T14:00:12Z"
 }
